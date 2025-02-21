@@ -45,7 +45,7 @@ services:
       - MYSQL_DATABASE=sentiment_analysis
     volumes:
       - .:/app
-    command: [ "sh", "-c", "sleep 10 && python app.py" ]
+    command: [ "sh", "-c", "service cron start && tail -f /var/log/cron.log & python app.py" ]
 
 volumes:
   mysql_data:
