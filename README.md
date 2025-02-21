@@ -76,6 +76,13 @@ docker-compose exec flask-app python retrain.py
 
 ### Étape 3 : cron pour un réentraînement automatique 
 
+Pour vérifier que le cronjob fonctionne correctement, vous pouvez consulter les logs du conteneur qui gère le réentraînement automatique :
+
+bash
+docker-compose logs -f flask-app
+Vous devriez voir un message indiquant que le réentraînement a été effectué, comme :
+Modèle réentrainé
+Cela signifie que le réentraînement a été effectué avec succès.
 
 ## Tests
 
