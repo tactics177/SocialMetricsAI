@@ -14,4 +14,6 @@ RUN chmod 0644 /etc/cron.d/retrain-cron
 
 RUN crontab /etc/cron.d/retrain-cron
 
-CMD service cron start && python app.py
+RUN touch /var/log/cron.log
+
+CMD service cron start && tail -f /var/log/cron.log & python app.py
