@@ -60,6 +60,11 @@ Accédez à `http://127.0.0.1:5000` pour vérifier que l'API est bien en cours d
 
 ## Réentraîner le Modèle
 
+Pour vérifier que le cronjob fonctionne correctement, vous pouvez consulter les logs du conteneur qui gère le réentraînement automatique :
+
+bash
+docker-compose logs -f flask-app
+
 ### Étape 1 : Modifier les données d'entraînement
 Ajoutez plus de tweets à la table `tweets` de la base de données pour améliorer le modèle.
 
