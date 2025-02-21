@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sentiment_analysis
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      retries: 5
+
+  setup_db:
+    build: .
+    container_name: setup-db
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    command: [ "python", "/app/setup_db.py" ]
+
+
+  app:
+    build: .
+    container_name: flask-app
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_DATABASE=sentiment_analysis
+    volumes:
+      - .:/app
+    command: [ "sh", "-c", "sleep 10 && python app.py" ]
+
+volumes:
+  mysql_data:
